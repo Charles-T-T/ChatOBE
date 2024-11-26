@@ -14,6 +14,8 @@ PROMPT = """
 请牢记这些内容，记住你的功能和任务。
 """
 
+# openai.api_key = OPENAI_API_KEY  # 添加api-key后，这行注释掉
+
 # 存储对话历史
 conversation_history = [
     {
