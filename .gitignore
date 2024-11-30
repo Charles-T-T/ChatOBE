@@ -1,9 +1,13 @@
+# 忽略草稿
 draft/
 
+# 忽略python缓存
 __pycache__/
 
+# 忽略一些大体积资料
 *.pptx
 *.ppt
-
 *.zip
 
+# 忽略测试 ipynb
+*/test.ipynb
