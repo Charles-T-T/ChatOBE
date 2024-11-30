@@ -35,11 +35,13 @@ ChatOBE
 │  README.md  
 │  
 ├─docs
-│      instruction.md  
-│      requirements.md   
-│      TODOs.md
+│      instruction.md  # 本文件
+│      requirements.md  # 大作业要求
+│      TODOs.md  # 待办
 │
-└─src
+├─images  # 图片
+|
+└─src  # 代码
     │  app.py  # 程序入口
     │  ChatOBE.py  # ChatOBE主体，各种功能写在这里（ChatOBE类中）
     │  config.py  # 配置信息
