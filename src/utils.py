@@ -6,12 +6,9 @@ import tiktoken
 
 import config
 
+enc = tiktoken.encoding_for_model(config.MODEL)
 
-def count_token(text, model=config.MODEL):
-    """按照指定model的规则，计算字符串text对应的token数"""
-    try:
-        enc = tiktoken.encoding_for_model(model)
-    except KeyError:
-        print("err!")
+def count_token(text):
+    """计算text对应的token数"""
     tokens = enc.encode(text)
     return len(tokens)
