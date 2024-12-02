@@ -15,12 +15,11 @@ def get_db_connection():
     return conn
 
 
-def query_database(sql, params=None):
+def query_database(conn, sql):
     """执行查询语句并返回结果"""
-    conn = get_db_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute(sql, params or ())
+        cursor.execute(sql)
         results = cursor.fetchall()
     finally:
         cursor.close()

@@ -1,6 +1,5 @@
 import openai
 import markdown
-from typing import List, Dict
 
 import config
 import utils
@@ -11,7 +10,7 @@ class ChatOBE:
     ChatOBE
     """
 
-    def __init__(self, max_tokens=2000):
+    def __init__(self, max_tokens=4000):
         # 没把 api_key 配置到环境变量的话，需要把下面这行注释取消
         # self.api_key = config.OPENAI_API_KEY
 
@@ -20,9 +19,10 @@ class ChatOBE:
         self.max_tokens = max_tokens  # 用户一次最多可发送的token数
         self.chat_history = []  # 聊天记录
         self.chat_summary = []  # 聊天总结
+        # self.db_conn = utils.get_db_connection()  # 与数据库的连接
 
         # 预处理
-        self.prompt_tokens = utils.count_token(self.prompt)
+        self.prompt_tokens = utils.count_token(self.prompt)  # TODO 可能有新的prompt
         self.prompt_tokens += utils.count_token(self.summary_prompt)
 
     def chat(self, query, db_results=None):
@@ -36,16 +36,14 @@ class ChatOBE:
         """
         messages = self.organize_messages(query)
 
-        # TODO 这部分仅用于测试chatobe能否顺利读取后端mysql数据，后续要改
-        # 如果有数据库查询结果，将其整合到发送信息中
-        if db_results:
-            db_context = f"数据库查询结果如下：\n {db_results}"
-            messages.append({"role": "system", "content": db_context})
+        # # TODO 这部分仅用于测试chatobe能否顺利读取后端mysql数据，后续要改
+        # # 如果有数据库查询结果，将其整合到发送信息中
+        # if db_results:
+        #     db_context = f"数据库查询结果如下：\n {db_results}"
+        #     messages.append({"role": "system", "content": db_context})
 
         # TODO openai的api还提供其他许多参数，可以考虑修改
-        response = openai.chat.completions.create(
-            model=config.MODEL, messages=messages
-        )
+        response = openai.chat.completions.create(model=config.MODEL, messages=messages)
         ai_message = response.choices[0].message.content.strip()
 
         # 更新聊天记录
@@ -123,10 +121,22 @@ class ChatOBE:
 
         # 添加聊天记录
         messages.extend(self.chat_history)
-        
+
         # 添加本次query
         messages.append({"role": "user", "content": query})
-        
+
+        # 如果需要操作数据库，添加sql结果
+        if self.sql_needed(messages):
+            # NOTE debug
+            print("need sql.")
+            result = self.get_sql_result(messages)
+            if result:
+                # NOTE debug
+                print("get sql result: ", result)
+                messages.append(
+                    {"role": "system", "content": config.SQL_RESULT_PROMPT + result}
+                )
+
         return messages
 
     def count_history_summary_tokens(self):
@@ -148,3 +158,35 @@ class ChatOBE:
                 count += utils.count_token(value)
 
         return count
+
+    def sql_needed(self, messages):
+        """判断是否需要操作数据库才能处理用户的新消息
+
+        Args:
+            messages: 包含新消息的对话列表
+
+        Returns:
+            bool: 是否需要操作数据库
+        """
+        new_msgs = messages.copy()
+        new_msgs.append({"role": "system", "content": config.CHECK_SQL_PROMPT})
+        response = openai.chat.completions.create(model=config.MODEL, messages=new_msgs)
+        answer = response.choices[0].message.content.strip()
+        return "True" in answer
+
+    def get_sql_result(self, messages):
+        """获取sql操作的结果"""
+        new_msgs = messages.copy()
+        new_msgs.append({"role": "system", "content": config.GET_SQL_PROMPT})
+        response = openai.chat.completions.create(model=config.MODEL, messages=new_msgs)
+        answer = response.choices[0].message.content.strip()
+        # NOTE debug
+        print("llm's answer: ", answer)
+        if utils.sql_in_text(answer):
+            sql = utils.extract_sql(answer)
+            # NOTE debug
+            print("llm's sql: ", sql)
+            result = utils.query_database(sql)
+            return str(result)
+        else:
+            return None
