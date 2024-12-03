@@ -8,6 +8,7 @@ __pycache__/
 *.pptx
 *.ppt
 *.zip
+*.docx
 
 # 忽略测试 ipynb
 */test.ipynb
