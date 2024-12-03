@@ -21,16 +21,7 @@ def index():
 @app.route("/ask", methods=["POST"])
 def ask():
     user_message = request.form["message"]
-
-    # 测试：根据用户输入查询数据库
-    if "查询课程" in user_message:
-        sql = "SELECT * FROM course WHERE cname LIKE %s"
-        params = (f"%{user_message.split()[-1]}%",)
-        db_results = query_database(sql, params)
-    else:
-        db_results = None
-
-    ai_message = chatobe.chat(user_message, db_results=db_results)
+    ai_message = chatobe.chat(user_message)
     return jsonify({"ai_message": ai_message})
 
 

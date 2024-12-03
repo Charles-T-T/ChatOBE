@@ -25,7 +25,7 @@ class ChatOBE:
         self.prompt_tokens = utils.count_token(self.prompt)  # TODO 可能有新的prompt
         self.prompt_tokens += utils.count_token(self.summary_prompt)
 
-    def chat(self, query, db_results=None):
+    def chat(self, query):
         """获取ai的回复
 
         Args:

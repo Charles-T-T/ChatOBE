@@ -1,8 +1,8 @@
 # 数据库配置
 DATABASE_CONFIG = {
-    "host": "localhost",
-    "user": "root",
-    "password": "charles@mysql0618",
+    "host": "120.46.194.18",
+    "user": "fht",
+    "password": "333cc7",
     "port": 3306,
     "charset": "utf8mb4",
     "database": "sc",
@@ -38,7 +38,7 @@ GET_SQL_PROMPT = """用户的消息需要操作数据库才能给出准确的答
 请生成相应的sql语句，并用 <sql>和</sql>作为开始和结束sql语句的标志，
 例如： <sql>SELECT * FROM course;</sql>
 数据库中表的结构如下：
-课程表：
+课程信息：
 mysql> desc course;
 +---------+-------------+------+-----+---------+-------+
 | Field   | Type        | Null | Key | Default | Extra |
@@ -48,5 +48,27 @@ mysql> desc course;
 | ccredit | smallint    | YES  |     | NULL    |       |
 | cpno    | char(5)     | YES  | MUL | NULL    |       |
 +---------+-------------+------+-----+---------+-------+
+选课信息：
+mysql> desc sc;
++---------------+----------+------+-----+---------+-------+
+| Field         | Type     | Null | Key | Default | Extra |
++---------------+----------+------+-----+---------+-------+
+| sno           | char(8)  | NO   | PRI | NULL    |       |
+| cno           | char(5)  | NO   | PRI | NULL    |       |
+| grade         | smallint | YES  |     | NULL    |       |
+| semester      | char(5)  | YES  |     | NULL    |       |
+| teachingclass | char(8)  | YES  |     | NULL    |       |
++---------------+----------+------+-----+---------+-------+
+学生信息：
+mysql> desc student;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| sno        | char(8)     | NO   | PRI | NULL    |       |
+| sname      | varchar(20) | YES  | UNI | NULL    |       |
+| ssex       | char(6)     | YES  |     | NULL    |       |
+| sbirthdate | date        | YES  |     | NULL    |       |
+| smajor     | varchar(40) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
 请注意，你只能针对上面的表进行操作。
 """
