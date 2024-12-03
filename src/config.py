@@ -1,8 +1,8 @@
 # 数据库配置
 DATABASE_CONFIG = {
     "host": "120.46.194.18",
-    "user": "fht",
-    "password": "333cc7",
+    "user": "your_user_name",
+    "password": "your_password",
     "port": 3306,
     "charset": "utf8mb4",
     "database": "sc",
