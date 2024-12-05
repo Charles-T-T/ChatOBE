@@ -4,6 +4,9 @@ draft/
 # 忽略python缓存
 __pycache__/
 
+# 忽略sql
+sql/
+
 # 忽略一些大体积资料
 *.pptx
 *.ppt
