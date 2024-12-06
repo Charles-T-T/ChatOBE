@@ -36,12 +36,6 @@ class ChatOBE:
         """
         messages = self.organize_messages(query)
 
-        # # TODO 这部分仅用于测试chatobe能否顺利读取后端mysql数据，后续要改
-        # # 如果有数据库查询结果，将其整合到发送信息中
-        # if db_results:
-        #     db_context = f"数据库查询结果如下：\n {db_results}"
-        #     messages.append({"role": "system", "content": db_context})
-
         # TODO openai的api还提供其他许多参数，可以考虑修改
         response = openai.chat.completions.create(model=config.MODEL, messages=messages)
         ai_message = response.choices[0].message.content.strip()
