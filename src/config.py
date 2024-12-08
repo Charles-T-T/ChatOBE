@@ -1,8 +1,21 @@
+# 主页欢迎语
+# TODO 最后按照实际功能写
+WELCOME_MSG = """
+欢迎使用ChatOBE~ \n 
+我是结合了大语言模型的OBE系统，可以帮你进行选课、查询等等。
+需要我帮你做些什么？
+你可以问我：\n
+这学期我有哪些课？ \n
+操作系统出分了吗，我得了多少分？
+"""
+
+
 # 数据库配置
+# NOTE 下面默认是游客配置，只有相关数据的select权限
 DATABASE_CONFIG = {
     "host": "120.46.194.18",
-    "user": "dmx",
-    "password": "dmx_chatobe",
+    "user": "vistor",
+    "password": "visit_obe12138",
     "port": 3306,
     "charset": "utf8mb4",
     "database": "sc",
@@ -12,7 +25,7 @@ SQL_END = "</sql>"
 
 # LLM配置
 # author: FHT
-# 这里用的是我自己的openai-api-key
+# NOTE 这里用的是我自己的openai-api-key
 # github保护机制不允许上传
 # 所以运行的时候要把下面这行注释取消，并换成群里的key
 OPENAI_API_KEY = "key"

@@ -29,17 +29,18 @@ def get_db_connection():
 
 
 def query_database(sql):
-    """执行查询语句并返回结果"""
-    conn = get_db_connection()
-    cursor = conn.cursor()
+    """执行sql语句并返回结果"""
     try:
-        cursor.execute(sql)
-        results = cursor.fetchall()
-        conn.commit()
-    finally:
-        cursor.close()
-        conn.close()
-    return results
+        # 正常情况：执行sql并提交事务、返回结果
+        with get_db_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(sql)
+                results = cursor.fetchall()
+            conn.commit()
+        return f"Success, get: {str(results)}"
+    except Exception as e:
+        # 出现异常：返回报错
+        return f"Fail, error: {str(e)}"
 
 
 def sql_in_text(text):

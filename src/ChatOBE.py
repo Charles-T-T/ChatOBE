@@ -11,13 +11,13 @@ class ChatOBE:
     ChatOBE
     """
 
-    def __init__(self, max_tokens=4000):
+    def __init__(self, max_input_tokens=4000):
         # 没把 api_key 配置到环境变量的话，需要把下面这行注释取消
-        self.api_key = config.OPENAI_API_KEY
+        # openai.api_key = config.OPENAI_API_KEY
 
         self.prompt = config.PROMPT
         self.summary_prompt = config.SUMMARY_PROMPT
-        self.max_tokens = max_tokens  # 用户一次最多可发送的token数
+        self.max_input_tokens = max_input_tokens  # 用户一次最多可发送的token数
         self.chat_history = []  # 聊天记录
         self.chat_summary = []  # 聊天总结
         # self.db_conn = utils.get_db_connection()  # 与数据库的连接
@@ -36,12 +36,6 @@ class ChatOBE:
            str: ai根据用户发送内容给出的回复
         """
         messages = self.organize_messages(query)
-
-        # # TODO 这部分仅用于测试chatobe能否顺利读取后端mysql数据，后续要改
-        # # 如果有数据库查询结果，将其整合到发送信息中
-        # if db_results:
-        #     db_context = f"数据库查询结果如下：\n {db_results}"
-        #     messages.append({"role": "system", "content": db_context})
 
         # TODO openai的api还提供其他许多参数，可以考虑修改
         response = openai.chat.completions.create(model=config.MODEL, messages=messages)
@@ -111,7 +105,7 @@ class ChatOBE:
 
         # 刷新聊天记录，确保最终发送消息的长度在token限制内
         query_tokens = utils.count_token(query)
-        available_tokens = self.max_tokens - self.prompt_tokens - query_tokens
+        available_tokens = self.max_input_tokens - self.prompt_tokens - query_tokens
         self.refresh_history(available_tokens)
 
         # 如果有聊天的总结，将其添加到prompt之后
