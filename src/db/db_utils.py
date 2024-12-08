@@ -25,3 +25,18 @@ def query_database(conn, sql):
         cursor.close()
         conn.close()
     return results
+
+def check_user_credentials(user_id, password):  
+    """  
+    检查用户凭据是否正确  
+    """  
+    connection = get_db_connection()  
+    try:  
+        with connection.cursor() as cursor:  
+            sql = "SELECT * FROM obe.user WHERE user_id = %s AND password = %s"  
+            cursor.execute(sql, (user_id, password))  
+            user = cursor.fetchone()  
+    finally:  
+        connection.close()  
+    
+    return user  # 返回查询结果  

@@ -1,8 +1,8 @@
 # 数据库配置
 DATABASE_CONFIG = {
     "host": "120.46.194.18",
-    "user": "your_user_name",
-    "password": "your_password",
+    "user": "dmx",
+    "password": "dmx_chatobe",
     "port": 3306,
     "charset": "utf8mb4",
     "database": "sc",
@@ -15,7 +15,7 @@ SQL_END = "</sql>"
 # 这里用的是我自己的openai-api-key
 # github保护机制不允许上传
 # 所以运行的时候要把下面这行注释取消，并换成群里的key
-OPENAI_API_KEY = "your-key"
+OPENAI_API_KEY = "key"
 MODEL = "gpt-4o"
 
 # 各种prompt

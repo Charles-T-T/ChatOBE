@@ -4,6 +4,7 @@ import markdown
 import config
 import utils
 
+openai.api_key = config.OPENAI_API_KEY
 
 class ChatOBE:
     """
@@ -12,7 +13,7 @@ class ChatOBE:
 
     def __init__(self, max_tokens=4000):
         # 没把 api_key 配置到环境变量的话，需要把下面这行注释取消
-        # self.api_key = config.OPENAI_API_KEY
+        self.api_key = config.OPENAI_API_KEY
 
         self.prompt = config.PROMPT
         self.summary_prompt = config.SUMMARY_PROMPT
