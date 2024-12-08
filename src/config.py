@@ -6,7 +6,7 @@ WELCOME_MSG = """
 需要我帮你做些什么？
 你可以问我：\n
 这学期我有哪些课？ \n
-操作系统出分了吗，我得了多少分？
+离散数学在哪个教室上？
 """
 
 
@@ -49,39 +49,32 @@ SQL_RESULT_PROMPT = "下面是数据库操作的结果，如果之后需要展�
 
 GET_SQL_PROMPT = """用户的消息需要操作数据库才能给出准确的答复，
 请生成相应的sql语句，并用 <sql>和</sql>作为开始和结束sql语句的标志，
-例如： <sql>SELECT * FROM course;</sql>
+例如： <sql>SELECT * FROM course;</sql> \n
 数据库中表的结构如下：
+\n
 课程信息：
-mysql> desc course;
-+---------+-------------+------+-----+---------+-------+
-| Field   | Type        | Null | Key | Default | Extra |
-+---------+-------------+------+-----+---------+-------+
-| cno     | char(5)     | NO   | PRI | NULL    |       |
-| cname   | varchar(40) | NO   |     | NULL    |       |
-| ccredit | smallint    | YES  |     | NULL    |       |
-| cpno    | char(5)     | YES  | MUL | NULL    |       |
-+---------+-------------+------+-----+---------+-------+
-选课信息：
-mysql> desc sc;
-+---------------+----------+------+-----+---------+-------+
-| Field         | Type     | Null | Key | Default | Extra |
-+---------------+----------+------+-----+---------+-------+
-| sno           | char(8)  | NO   | PRI | NULL    |       |
-| cno           | char(5)  | NO   | PRI | NULL    |       |
-| grade         | smallint | YES  |     | NULL    |       |
-| semester      | char(5)  | YES  |     | NULL    |       |
-| teachingclass | char(8)  | YES  |     | NULL    |       |
-+---------------+----------+------+-----+---------+-------+
-学生信息：
-mysql> desc student;
-+------------+-------------+------+-----+---------+-------+
-| Field      | Type        | Null | Key | Default | Extra |
-+------------+-------------+------+-----+---------+-------+
-| sno        | char(8)     | NO   | PRI | NULL    |       |
-| sname      | varchar(20) | YES  | UNI | NULL    |       |
-| ssex       | char(6)     | YES  |     | NULL    |       |
-| sbirthdate | date        | YES  |     | NULL    |       |
-| smajor     | varchar(40) | YES  |     | NULL    |       |
-+------------+-------------+------+-----+---------+-------+
+CREATE TABLE obe.Course (
+    CourseID INT AUTO_INCREMENT PRIMARY KEY,
+    CourseName VARCHAR(20) NOT NULL,
+    Credit SMALLINT NOT NULL,
+    Semester TINYINT NOT NULL,
+    Information TEXT,
+    CHECK (Semester BETWEEN 1 AND 8)
+);
+\n
+上课时间地点信息：
+CREATE TABLE obe.CourseSchedule (
+    ScheduleID INT PRIMARY KEY,
+    CourseID INT NOT NULL,
+    WeekDay ENUM('MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'),
+    StartTime TIME NOT NULL,
+    EndTime TIME NOT NULL,
+    Room VARCHAR(20) NOT NULL,
+    Building VARCHAR(20) NOT NULL,
+
+    FOREIGN KEY (CourseID) REFERENCES obe.Course(CourseID) ON DELETE CASCADE,
+    CHECK (EndTime > StartTime)
+);
+\n
 请注意，你只能针对上面的表进行操作。
 """
