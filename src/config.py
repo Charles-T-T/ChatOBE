@@ -28,7 +28,7 @@ SQL_END = "</sql>"
 # NOTE 这里用的是我自己的openai-api-key
 # github保护机制不允许上传
 # 所以运行的时候要把下面这行注释取消，并换成群里的key
-OPENAI_API_KEY = "your-key"
+OPENAI_API_KEY = "key"
 MODEL = "gpt-4o"
 
 # 各种prompt

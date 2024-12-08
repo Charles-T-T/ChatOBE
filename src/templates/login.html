@@ -1,0 +1,105 @@
+<!DOCTYPE html>  
+<html lang="zh-CN">  
+
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>登录 - ChatOBE</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            display: flex;  
+            justify-content: center;  
+            align-items: center;  
+            height: 100vh;  
+            background-color: #f4f4f4;  
+        }  
+
+        form {  
+            background: white;  
+            padding: 20px;  
+            border-radius: 5px;  
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+        }  
+
+        h2 {  
+            margin-bottom: 20px;  
+        }  
+
+        label {  
+            display: block;  
+            margin-bottom: 10px;  
+        }  
+
+        input {  
+            width: 100%;  
+            padding: 10px;  
+            margin: 5px 0 15px;  
+            border: 1px solid #ccc;  
+            border-radius: 4px;  
+        }  
+
+        button {  
+            padding: 10px;  
+            background-color: #28a745;  
+            color: white;  
+            border: none;  
+            border-radius: 4px;  
+            cursor: pointer;  
+        }  
+
+        button:hover {  
+            background-color: #218838;  
+        }  
+
+        .message {  
+            color: red;  
+            margin-top: 10px;  
+        }  
+    </style>  
+</head>  
+
+<body>  
+    <form id="login-form">  
+        <h2>登录</h2>  
+        <label for="user-id">用户名:</label>  
+        <input type="text" id="user-id" name="user_id" required>  
+        <label for="password">密码:</label>  
+        <input type="password" id="password" name="password" required>  
+        <button type="submit">登录</button>  
+        <div id="login-message" class="message"></div>  
+    </form>  
+
+    <script>  
+        document.getElementById('login-form').addEventListener('submit', function (event) {  
+            event.preventDefault(); // 防止表单默认提交  
+
+            const userId = document.getElementById('user-id').value;  
+            const password = document.getElementById('password').value;  
+
+            fetch('/login', {  
+                method: 'POST', // 使用 POST 方法提交数据  
+                headers: {  
+                    'Content-Type': 'application/json' // 指定请求体格式  
+                },  
+                body: JSON.stringify({ user_id: userId, password: password }) // 将输入数据转为 JSON 字符串  
+            })  
+                .then(response => response.json()) // 处理响应，并转为 JSON  
+                .then(data => {  
+                    if (data.success) {  
+                        // 登录成功，重定向到首页  
+                        window.location.href = '/';  
+                    } else {  
+                        // 显示错误信息  
+                        document.getElementById("login-message").innerText = data.message;  
+                    }  
+                })  
+                .catch(error => {  
+                    document.getElementById("login-message").innerText = "登录请求失败，请稍后再试。";  
+                    console.error('Error:', error); // 打印错误信息到控制台  
+                });  
+        });  
+    </script>  
+</body>  
+
+</html>
