@@ -4,6 +4,7 @@ import markdown
 import config
 import utils
 
+openai.api_key = config.OPENAI_API_KEY
 
 class ChatOBE:
     """
