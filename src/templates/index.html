@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>"ChatOBE"</title>
+    <title>ChatOBE</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <!-- 引入 marked.js 库 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -15,7 +15,7 @@
     <div class="chat-container">
         <div id="chat-box" class="chat-box">
             <!-- 欢迎消息 -->
-            <div class="message ai-message">chatOBE: {{ initial_message }}</div>
+            <div class="message ai-message">ChatOBE: {{ initial_message }}</div>
         </div>
         <form id="chat-form">
             <input type="text" id="user-message" placeholder="Type a message..." required>
@@ -34,7 +34,7 @@
             var chatBox = document.getElementById("chat-box");
 
             // 显示用户输入的消息
-            chatBox.innerHTML += `<div class="message user-message">游客: ${userMessage}</div>`;
+            chatBox.innerHTML += `<div class="message user-message">You: ${userMessage}</div>`;
             document.getElementById("user-message").value = '';  // 清空输入框
 
             // 显示 AI 的“正在思考...”提示
