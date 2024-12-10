@@ -15,3 +15,6 @@ sql/
 
 # 忽略测试 ipynb
 */test.ipynb
+
+# 忽略大作业打包提交内容
+/submit
