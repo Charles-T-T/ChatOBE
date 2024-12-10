@@ -1,17 +1,15 @@
 import openai
-import markdown
 
 import config
 import utils
 
-openai.api_key = config.OPENAI_API_KEY
 
 class ChatOBE:
     """
     ChatOBE
     """
 
-    def __init__(self, max_input_tokens=4000):
+    def __init__(self, max_input_tokens=40000):
         # 没把 api_key 配置到环境变量的话，需要把下面这行注释取消
         # openai.api_key = config.OPENAI_API_KEY
 
@@ -20,22 +18,24 @@ class ChatOBE:
         self.max_input_tokens = max_input_tokens  # 用户一次最多可发送的token数
         self.chat_history = []  # 聊天记录
         self.chat_summary = []  # 聊天总结
-        # self.db_conn = utils.get_db_connection()  # 与数据库的连接
 
         # 预处理
         self.prompt_tokens = utils.count_token(self.prompt)  # TODO 可能有新的prompt
         self.prompt_tokens += utils.count_token(self.summary_prompt)
 
-    def chat(self, query):
+    def chat(self, query, user_id):
         """获取ai的回复
 
         Args:
             query(str): 用户发送的内容
 
         Returns:
-           str: ai根据用户发送内容给出的回复
+            str: ai根据用户发送内容给出的回复
         """
-        messages = self.organize_messages(query)
+        messages = self.organize_messages(query, user_id)
+
+        # NOTE debug
+        print(f"id: {user_id}")
 
         # TODO openai的api还提供其他许多参数，可以考虑修改
         response = openai.chat.completions.create(model=config.MODEL, messages=messages)
@@ -90,7 +90,7 @@ class ChatOBE:
             self.chat_summary.append(summary)
             self.chat_history = remaining_messages
 
-    def organize_messages(self, query):
+    def organize_messages(self, query, user_id):
         """
         将用户发送的内容与聊天记录、聊天总结、prompt整合
         并整理为符合api接收的格式
@@ -101,7 +101,15 @@ class ChatOBE:
         Returns:
             list: 整合后待发送给chatobe的内容
         """
-        messages = [{"role": "system", "content": self.prompt}]
+        messages = [
+            {"role": "system", "content": self.prompt},
+            {"role": "system", "content": f"当前用户id为：{user_id}"},
+            {
+                "role": "system",
+                "content": f"当前用户身份为：{utils.get_user_identity(user_id)}",
+            },
+            {"role": "system", "content": f"当前时间为：{utils.get_cur_time()}"},
+        ]
 
         # 刷新聊天记录，确保最终发送消息的长度在token限制内
         query_tokens = utils.count_token(query)
@@ -125,12 +133,11 @@ class ChatOBE:
             # NOTE debug
             print("need sql.")
             result = self.get_sql_result(messages)
-            if result:
-                # NOTE debug
-                print("get sql result: ", result)
-                messages.append(
-                    {"role": "system", "content": config.SQL_RESULT_PROMPT + result}
-                )
+            # NOTE debug
+            print("get sql result: ", result)
+            messages.append(
+                {"role": "system", "content": config.SQL_RESULT_PROMPT + result}
+            )
 
         return messages
 
@@ -184,4 +191,4 @@ class ChatOBE:
             result = utils.query_database(sql)
             return str(result)
         else:
-            return None
+            return answer
