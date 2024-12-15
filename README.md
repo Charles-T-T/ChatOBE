@@ -22,4 +22,4 @@ https://github.com/user-attachments/assets/79a49390-0ac6-4a9b-b401-7f09bc6d4d4a
 
 用户为老师：
 
-<img src="./images/teacher_1.png" alt="teacher_1" width="600;" /> 
+<img src="./images/teacher_2.png" alt="teacher_2" width="600;" /> 
