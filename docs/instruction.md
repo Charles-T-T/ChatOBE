@@ -47,9 +47,6 @@ ChatOBE
     │  config.py  # 配置信息
     │  utils.py  # 辅助方法写在这里面
     │
-    ├─db
-    │     db_utils.py  # 后端数据库相关方法写在这里
-    │
     ├─static  # 前端
     │      style.css
     │
