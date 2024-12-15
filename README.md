@@ -18,8 +18,8 @@ https://github.com/user-attachments/assets/79a49390-0ac6-4a9b-b401-7f09bc6d4d4a
 
 用户为学生：
 
-![student_1](./images/student_1.png)
+<img src="./images/student_1.png" alt="student_1" width="600;" /> 
 
 用户为老师：
 
-![teacher_1](./images/teacher_1.png)
+<img src="./images/teacher_1.png" alt="teacher_1" width="600;" /> 
