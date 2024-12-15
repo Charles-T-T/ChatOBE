@@ -1,5 +1,4 @@
 # 主页欢迎语
-# TODO 最后按照实际功能写
 WELCOME_MSG = """
 欢迎使用ChatOBE~ \n 
 我是结合了大语言模型的OBE系统，可以帮你进行课业信息管理。
@@ -12,11 +11,11 @@ WELCOME_MSG = """
 
 
 # 数据库配置
-# NOTE 下面默认是游客配置，只有相关数据的select权限
+# NOTE 大作业已完成，服务器已关机
 DATABASE_CONFIG = {
     "host": "120.46.194.18",
-    "user": "fht",
-    "password": "333cc7",
+    "user": "your_user_name",
+    "password": "your_password",
     "port": 3306,
     "charset": "utf8mb4",
     "database": "sc",
@@ -25,7 +24,7 @@ SQL_START = "<sql>"
 SQL_END = "</sql>"
 
 # LLM配置
-# author: FHT
+# author: Charles
 # NOTE 这里用的是我自己的openai-api-key
 # github保护机制不允许上传
 # 所以运行的时候要把下面这行注释取消，并换成群里的key
